@@ -9,14 +9,27 @@ from time import mktime
 
 import feedparser
 
-# ── Feed sources ───────────────────────────────────────────────────────────────
-FEEDS = {
+# ── Defaults (overridden by config/feeds.json and env vars) ────────────────────
+DEFAULT_FEEDS = {
     "TechCrunch": "https://techcrunch.com/category/artificial-intelligence/feed/",
     "MIT Technology Review": "https://www.technologyreview.com/feed/",
     "The Verge": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
     "Ars Technica": "https://feeds.arstechnica.com/arstechnica/technology-lab",
     "VentureBeat": "https://venturebeat.com/category/ai/feed/",
 }
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def load_feeds():
+    """Load feeds from config/feeds.json if it exists, else use defaults."""
+    config_path = os.path.join(BASE_DIR, "config", "feeds.json")
+    if os.path.exists(config_path):
+        with open(config_path, "r", encoding="utf-8") as f:
+            feeds = json.load(f)
+        print(f"Loaded {len(feeds)} feeds from config/feeds.json")
+        return feeds
+    return DEFAULT_FEEDS
 
 # ── Tag keyword map ────────────────────────────────────────────────────────────
 TAG_KEYWORDS = {
@@ -36,7 +49,7 @@ TAG_KEYWORDS = {
     "Coding": ["code", "coding", "programming", "developer", "software engineer"],
 }
 
-MAX_ARTICLES_PER_FEED = 15
+MAX_ARTICLES_PER_FEED = int(os.environ.get("NEWS_MAX_PER_FEED", "15"))
 
 
 def strip_html(text):
@@ -72,9 +85,11 @@ def parse_date(entry):
 
 def fetch_articles():
     """Fetch articles from all configured RSS feeds."""
+    feeds = load_feeds()
     articles = []
 
-    for source, url in FEEDS.items():
+    print(f"Max articles per feed: {MAX_ARTICLES_PER_FEED}")
+    for source, url in feeds.items():
         print(f"Fetching: {source} ...")
         try:
             feed = feedparser.parse(url)
