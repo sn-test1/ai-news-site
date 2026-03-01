@@ -234,6 +234,71 @@ button, input, select { font-family: inherit; font-size: inherit; }
     text-transform: uppercase; letter-spacing: 0.05em;
 }
 
+/* ── 6b. Market Pulse ──────────────────────────────────────────── */
+.market-pulse {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 24px 28px;
+    margin-bottom: 32px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.pulse-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
+}
+.pulse-title {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 1rem; font-weight: 700; letter-spacing: -0.01em;
+    color: var(--text-primary);
+}
+.pulse-title svg { color: var(--accent); }
+.pulse-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+}
+.pulse-card {
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 8px;
+    transition: background-color 0.3s ease;
+}
+.pulse-card-label {
+    font-size: 0.7rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--text-muted);
+}
+.pulse-card-value {
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--text-primary);
+}
+.pulse-topics {
+    display: flex; flex-direction: column; gap: 4px;
+}
+.pulse-topic {
+    font-size: 0.85rem; font-weight: 600;
+    color: var(--text-primary); text-transform: capitalize;
+}
+.pulse-sentiment.positive { color: #059669; }
+.pulse-sentiment.negative { color: #dc2626; }
+.pulse-sentiment.neutral  { color: var(--accent); }
+.pulse-new { color: #059669; }
+.pulse-time { font-size: 0.82rem; font-weight: 500; color: var(--text-secondary); }
+.pulse-empty { color: var(--text-muted); font-size: 0.875rem; font-style: italic; }
+
+@media (max-width: 1024px) {
+    .pulse-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+    .market-pulse { padding: 20px; margin-bottom: 24px; }
+    .pulse-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+    .pulse-grid { grid-template-columns: 1fr; }
+}
+
 /* ── 7. Content Layout ─────────────────────────────────────────── */
 .content-layout {
     display: grid;

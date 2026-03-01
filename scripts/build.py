@@ -82,7 +82,71 @@ def get_source_counts(articles):
     return source_counts.most_common()
 
 
+def load_market_pulse():
+    """Load market pulse data from data/market_pulse.json."""
+    path = os.path.join(BASE_DIR, "data", "market_pulse.json")
+    if not os.path.exists(path):
+        return None
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
 # ── HTML generators ────────────────────────────────────────────────────────────
+
+def build_market_pulse_html(pulse):
+    """Generate the Market Pulse panel HTML."""
+    if not pulse:
+        return '<p class="pulse-empty">Market Pulse data not yet available.</p>'
+
+    trending = pulse.get("trending_topics", [])
+    top_company = pulse.get("top_company", "N/A")
+    sentiment = pulse.get("sentiment", "Neutral")
+    new_articles = pulse.get("new_articles", 0)
+    timestamp = pulse.get("timestamp", "")
+
+    # Format timestamp for display
+    try:
+        dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+        ts_display = dt.strftime("%b %d, %Y at %H:%M UTC")
+    except (ValueError, TypeError):
+        ts_display = timestamp
+
+    # Sentiment indicator
+    sentiment_icons = {"Positive": "\u25b2", "Negative": "\u25bc", "Neutral": "\u25c6"}
+    sentiment_classes = {"Positive": "positive", "Negative": "negative", "Neutral": "neutral"}
+    s_icon = sentiment_icons.get(sentiment, "\u25c6")
+    s_class = sentiment_classes.get(sentiment, "neutral")
+
+    # Trending topics list
+    trending_items = ""
+    for i, topic in enumerate(trending, 1):
+        trending_items += f'<span class="pulse-topic">#{i} {topic}</span>'
+
+    return (
+        f'<div class="pulse-grid">'
+        f'<div class="pulse-card">'
+        f'<span class="pulse-card-label">Trending Topics</span>'
+        f'<div class="pulse-topics">{trending_items}</div>'
+        f'</div>'
+        f'<div class="pulse-card">'
+        f'<span class="pulse-card-label">Top Company</span>'
+        f'<span class="pulse-card-value">{top_company}</span>'
+        f'</div>'
+        f'<div class="pulse-card">'
+        f'<span class="pulse-card-label">Sentiment</span>'
+        f'<span class="pulse-card-value pulse-sentiment {s_class}">{s_icon} {sentiment}</span>'
+        f'</div>'
+        f'<div class="pulse-card">'
+        f'<span class="pulse-card-label">New Articles</span>'
+        f'<span class="pulse-card-value pulse-new">+{new_articles}</span>'
+        f'</div>'
+        f'<div class="pulse-card">'
+        f'<span class="pulse-card-label">Updated</span>'
+        f'<span class="pulse-card-value pulse-time">{ts_display}</span>'
+        f'</div>'
+        f'</div>'
+    )
+
 
 def build_source_filters_html(source_counts):
     html = ""
@@ -134,6 +198,7 @@ def build():
     print("Building AI News Dashboard...")
 
     articles = load_articles()
+    pulse = load_market_pulse()
     trending = compute_trending(articles)
     summary = generate_summary(articles)
     last_updated = datetime.utcnow().strftime("%B %d, %Y at %H:%M UTC")
@@ -157,6 +222,7 @@ def build():
         "{{SOURCE_FILTERS}}": build_source_filters_html(source_counts),
         "{{TOPIC_TAGS}}": build_topic_tags_html(tag_counts),
         "{{TRENDING_TOPICS}}": build_trending_html(trending),
+        "{{MARKET_PULSE}}": build_market_pulse_html(pulse),
         "{{ARTICLES_JSON}}": articles_json,
     }
 
