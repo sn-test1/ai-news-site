@@ -1,5 +1,15 @@
 [
   {
+    "title": "OpenAI reveals more details about its agreement with the Pentagon",
+    "link": "https://techcrunch.com/2026/03/01/openai-shares-more-details-about-its-agreement-with-the-pentagon/",
+    "source": "TechCrunch",
+    "published": "2026-03-01T16:30:10Z",
+    "summary": "By CEO Sam Altman’s own admission, OpenAI’s deal with the Department of Defense was “definitely rushed,” and “the optics don’t look good.”",
+    "tags": [
+      "OpenAI"
+    ]
+  },
+  {
     "title": "Anthropic’s Claude rises to No. 1 in the App Store following Pentagon dispute",
     "link": "https://techcrunch.com/2026/03/01/anthropics-claude-rises-to-no-2-in-the-app-store-following-pentagon-dispute/",
     "source": "TechCrunch",
@@ -225,18 +235,6 @@
     "summary": "OpenAI has closed another round of funding, totalling $110 billion being newly committed to the maker of ChatGPT, which it says has more than 900 million weekly active users and over 50 million consumer subscribers. Amazon is investing $50 billion and striking a deal that includes plans for custom m",
     "tags": [
       "LLM",
-      "OpenAI",
-      "Hardware",
-      "Funding"
-    ]
-  },
-  {
-    "title": "OpenAI raises $110B in one of the largest private funding rounds in history",
-    "link": "https://techcrunch.com/2026/02/27/openai-raises-110b-in-one-of-the-largest-private-funding-rounds-in-history/",
-    "source": "TechCrunch",
-    "published": "2026-02-27T14:13:01Z",
-    "summary": "The new funding consists of a $50 billion investment from Amazon as well as $30 billion each from Nvidia and SoftBank, against a $730 billion valuation.",
-    "tags": [
       "OpenAI",
       "Hardware",
       "Funding"
